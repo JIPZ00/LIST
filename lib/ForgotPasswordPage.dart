@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list/login.dart';
 import 'package:list/recoverySuccessful.dart';
+import 'package:list/values/tema.dart';
 
 class ForgotPasswordPage extends StatefulWidget {
   static String id = 'register_successful_page';
@@ -49,7 +50,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
                 settings: RouteSettings(name: RecoverySuccessfulPage.id)));
           }
         },
-        style: ElevatedButton.styleFrom(primary: Colors.grey),
+        style: ElevatedButton.styleFrom(primary: primaryBlueColor),
         //onPressed: (){}
       );
     }
@@ -57,7 +58,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     return SafeArea(
       child: Scaffold(
           appBar: AppBar(
-            backgroundColor: Colors.grey,
+            backgroundColor: primaryBlueColor,
             title: Text('Recuperar Contraseña'),
           ),
           body: Center(

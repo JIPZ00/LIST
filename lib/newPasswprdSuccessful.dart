@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list/register.dart';
 import 'package:list/login.dart';
+import 'package:list/values/tema.dart';
 
 class NewPasswordSuccessfulPage extends StatefulWidget {
   static String id = 'newpass_successful_page';
@@ -24,7 +25,11 @@ class _NewPasswordSuccessfulPageState extends State<NewPasswordSuccessfulPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             message(context),
-            Image.asset("assets/LIST_logo.png"),
+            Image.asset(
+              "assets/logo.png",
+              height: 120,
+              width: 250,
+            ),
           ],
         ),
       ),
@@ -59,7 +64,7 @@ class _NewPasswordSuccessfulPageState extends State<NewPasswordSuccessfulPage> {
                       },
                   child: Text('Regresar al inicio'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
+                    primary: primaryBlueColor
                   ))
             ],
           )

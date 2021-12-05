@@ -2,7 +2,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:list/login.dart';
-import 'package:list/firstPage.dart';
+import 'package:list/first_page.dart';
 import 'package:list/values/tema.dart';
 
 void main() async {
@@ -21,7 +21,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       //theme: miTema(context),
       theme: ThemeData(
-        visualDensity: VisualDensity.adaptivePlatformDensity,
+        colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.blue),
       ),
       initialRoute: LoginPage.id,
       routes: {

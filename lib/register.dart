@@ -3,9 +3,12 @@ import 'package:list/accounts.dart';
 import 'package:list/login.dart';
 import 'package:list/registerSuccessful.dart';
 import 'package:list/user.dart';
+import 'package:list/values/tema.dart';
 
 class RegisterPage extends StatefulWidget {
   static String id = 'register_page';
+
+  const RegisterPage({Key? key}) : super(key: key);
 
   @override
   _RegisterPageState createState() => _RegisterPageState();
@@ -21,7 +24,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: TextField(
         controller: nameUser,
         keyboardType: TextInputType.name,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(Icons.person),
           hintText: 'User',
           labelText: 'User',
@@ -38,7 +41,7 @@ class _RegisterPageState extends State<RegisterPage> {
       child: TextField(
         controller: emailUser,
         keyboardType: TextInputType.emailAddress,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(Icons.email),
           hintText: 'Correo electronico',
           labelText: 'Correo electronico',
@@ -56,7 +59,7 @@ class _RegisterPageState extends State<RegisterPage> {
         controller: passwordUser,
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(Icons.lock),
           hintText: 'Contraseña',
           labelText: 'Contraseña',
@@ -74,7 +77,7 @@ class _RegisterPageState extends State<RegisterPage> {
         controller: confirmPassword,
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
-        decoration: InputDecoration(
+        decoration: const InputDecoration(
           icon: Icon(Icons.lock),
           hintText: 'Confirma contraseña',
           labelText: 'Confirma contraseña',
@@ -87,14 +90,16 @@ class _RegisterPageState extends State<RegisterPage> {
   Widget loginButton() {
     return TextButton(
       style: TextButton.styleFrom(
-        textStyle:
-            const TextStyle(fontSize: 15, decoration: TextDecoration.underline),
+        textStyle: const TextStyle(
+            fontSize: 15,
+            decoration: TextDecoration.underline,
+            fontWeight: FontWeight.w700),
         primary: Colors.black,
       ),
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
-              return new LoginPage();
+              return const LoginPage();
             },
             settings: RouteSettings(name: LoginPage.id)));
       },
@@ -107,15 +112,15 @@ class _RegisterPageState extends State<RegisterPage> {
     Widget registerButtom() {
       return ElevatedButton(
         child: Container(
-          padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-          child: Text('REGISTRATE'),
+          padding: const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+          child: const Text('REGISTRATE'),
         ),
         onPressed: () {
           if (nameUser.text == '' ||
               emailUser.text == '' ||
               passwordUser.text == '' ||
               confirmPassword.text == '') {
-            ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
               content: Text("Datos incompletos."),
             ));
           } else {
@@ -125,56 +130,60 @@ class _RegisterPageState extends State<RegisterPage> {
                 registerAccount(nameUser.text, emailUser.text, context);
                 Navigator.of(context).push(MaterialPageRoute(
                     builder: (BuildContext context) {
-                      return new RegisterSuccessfulPage();
+                      return RegisterSuccessfulPage();
                     },
                     settings: RouteSettings(name: RegisterSuccessfulPage.id)));
               }
             });
           }
         },
-        style: ElevatedButton.styleFrom(primary: Colors.grey),
+        style: ElevatedButton.styleFrom(primary: primaryBlueColor),
         //onPressed: (){}
       );
     }
 
     return SafeArea(
       child: Scaffold(
-          body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 25.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                const SizedBox(
-                  height: 15.0,
-                ),
-                userTextField(),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                emailTextField(),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                psswTextField(),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                cPasswTextField(),
-                const SizedBox(
-                  height: 20,
-                ),
-                registerButtom(),
-                const SizedBox(
-                  height: 50,
-                ),
-                Text("¿Ya estás registrado?"),
-                loginButton(),
-              ],
-            ),
+          appBar: AppBar(
+            backgroundColor: primaryBlueColor,
+            title: const Text('Crear cuenta'),
           ),
-        ),
-      )),
+          body: Center(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 25.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    userTextField(),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    emailTextField(),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    psswTextField(),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    cPasswTextField(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    registerButtom(),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    const Text("¿Ya estás registrado?"),
+                    loginButton(),
+                  ],
+                ),
+              ),
+            ),
+          )),
     );
   }
 }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:list/register.dart';
 import 'package:list/login.dart';
+import 'package:list/values/tema.dart';
 
 class RegisterSuccessfulPage extends StatefulWidget {
   static String id = 'register_successful_page';
@@ -19,7 +20,11 @@ class _RegisterSuccessfulPageState extends State<RegisterSuccessfulPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             message(context),
-            Image.asset("assets/LIST_logo.png"),
+            Image.asset(
+              "assets/logo.png",
+              height: 120,
+              width: 250,
+            ),
           ],
         ),
       ),
@@ -52,9 +57,7 @@ class _RegisterSuccessfulPageState extends State<RegisterSuccessfulPage> {
                             settings: RouteSettings(name: LoginPage.id))),
                       },
                   child: Text('Regresar al inicio'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
-                  ))
+                  style: ElevatedButton.styleFrom(primary: primaryBlueColor))
             ],
           )
         ],

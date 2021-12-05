@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:list/register.dart';
 import 'package:list/login.dart';
 import 'package:list/ForgotPasswordPage.dart';
+import 'package:list/values/tema.dart';
 
 class RecoverySuccessfulPage extends StatefulWidget {
   static String id = 'recovery_successful_page';
@@ -20,7 +21,11 @@ class _RecoverySuccessfulPageState extends State<RecoverySuccessfulPage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             message(context),
-            Image.asset("assets/LIST_logo.png"),
+            Image.asset(
+              "assets/logo.png",
+              height: 120,
+              width: 250,
+            ),
           ],
         ),
       ),
@@ -54,9 +59,7 @@ class _RecoverySuccessfulPageState extends State<RecoverySuccessfulPage> {
                             settings: RouteSettings(name: LoginPage.id))),
                       },
                   child: Text('Regresar al inicio'),
-                  style: ElevatedButton.styleFrom(
-                    primary: Colors.grey,
-                  ))
+                  style: ElevatedButton.styleFrom(primary: primaryBlueColor))
             ],
           )
         ],

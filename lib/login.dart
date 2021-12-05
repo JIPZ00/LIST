@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:list/ForgotPasswordPage.dart';
-import 'package:list/login.dart';
-import 'package:list/firstPage.dart';
+import 'package:list/first_page.dart';
 import 'package:list/register.dart';
 import 'package:list/user.dart';
+import 'package:list/values/tema.dart';
 
 class LoginPage extends StatefulWidget {
   static String id = 'login_page';
+
+  const LoginPage({Key? key}) : super(key: key);
 
   @override
   _LoginPageState createState() => _LoginPageState();
@@ -18,14 +20,14 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController controlUsuario = TextEditingController();
   Widget userTextField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      width: 350,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
         controller: controlUsuario,
         keyboardType: TextInputType.emailAddress,
         decoration: InputDecoration(
-          icon: Icon(Icons.person),
-          hintText: 'User',
-          labelText: 'User',
+          isDense: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
         ),
         onChanged: (value) {},
       ),
@@ -35,27 +37,20 @@ class _LoginPageState extends State<LoginPage> {
   TextEditingController controlPassword = TextEditingController();
   Widget passwordTextField() {
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 20.0),
+      width: 350,
+      padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: TextField(
         controller: controlPassword,
         keyboardType: TextInputType.visiblePassword,
         obscureText: true,
         decoration: InputDecoration(
-          icon: Icon(Icons.lock),
-          hintText: 'Contraseña',
-          labelText: 'Contraseña',
+          isDense: true,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(10.0)),
         ),
         onChanged: (value) {},
       ),
     );
   }
-
-  @override
-  /*Widget labelForgotPssw() {
-    return Scaffold(
-      
-    )
-  }*/
 
   Widget forgotPassword() {
     return TextButton(
@@ -67,7 +62,7 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
-              return new ForgotPasswordPage();
+              return ForgotPasswordPage();
             },
             settings: RouteSettings(name: ForgotPasswordPage.id)));
       },
@@ -85,7 +80,7 @@ class _LoginPageState extends State<LoginPage> {
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
             builder: (BuildContext context) {
-              return new RegisterPage();
+              return RegisterPage();
             },
             settings: RouteSettings(name: RegisterPage.id)));
       },
@@ -98,9 +93,12 @@ class _LoginPageState extends State<LoginPage> {
     Widget bottonLogin() {
       {
         return ElevatedButton(
+          style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(primaryBlueColor)),
           child: Container(
-            padding: EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
-            child: Text('LOGIN'),
+            padding:
+                const EdgeInsets.symmetric(horizontal: 80.0, vertical: 15.0),
+            child: const Text('LOGIN', style: TextStyle(fontSize: 18)),
           ),
           onPressed: () {
             if (controlUsuario.text != '' && controlPassword.text != '') {
@@ -112,23 +110,22 @@ class _LoginPageState extends State<LoginPage> {
                 if (resp["ok"] == true) {
                   Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) {
-                        return new FirstPage();
+                        return const FirstPage();
                       },
                       settings: RouteSettings(name: FirstPage.id)));
                   //Si no
                 } else {
-                  ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("Datos incompletos o error."),
                   ));
                 }
               });
             } else {
-              ScaffoldMessenger.of(context).showSnackBar(new SnackBar(
+              ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                 content: Text("Datos erroneos."),
               ));
             }
           },
-          style: ElevatedButton.styleFrom(primary: Colors.grey),
           //onPressed: (){}
         );
       }
@@ -136,44 +133,50 @@ class _LoginPageState extends State<LoginPage> {
 
     return SafeArea(
       child: Scaffold(
+          backgroundColor: backgroundPageColor,
           body: Center(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 25.0),
-          child: SingleChildScrollView(
-            child: Column(
-              children: [
-                /*const Image(
-                  //image: NetworkImage(''),
-                  image: AssetImage('assets\LIST_logo.png'),
-                  height: 140,
-                ),*/
-                Image.asset("assets/LIST_logo.png"),
-                const SizedBox(
-                  height: 15.0,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 25.0),
+              child: SingleChildScrollView(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Image.asset("assets/logo.png", height: 120,width: 250,),
+                    const SizedBox(
+                      height: 30.0,
+                    ),
+                    const Text('Correo Electrónico'),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    userTextField(),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    const Text('Contraseña'),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    passwordTextField(),
+                    const SizedBox(
+                      height: 15.0,
+                    ),
+                    forgotPassword(),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    bottonLogin(),
+                    const SizedBox(
+                      height: 50,
+                    ),
+                    const Text("¿Aún no estás registrado?"),
+                    registerButton(),
+                  ],
                 ),
-                userTextField(),
-                const SizedBox(
-                  height: 15,
-                ),
-                passwordTextField(),
-                const SizedBox(
-                  height: 15.0,
-                ),
-                forgotPassword(),
-                const SizedBox(
-                  height: 20,
-                ),
-                bottonLogin(),
-                const SizedBox(
-                  height: 50,
-                ),
-                Text("¿Aún no estás registrado?"),
-                registerButton(),
-              ],
+              ),
             ),
-          ),
-        ),
-      )),
+          )),
     );
   }
 }
