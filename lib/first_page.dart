@@ -1,9 +1,12 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:list/nota.dart';
 import 'package:list/user_pref.dart';
 import 'package:list/values/tema.dart';
 import 'package:table_calendar/table_calendar.dart';
 import 'package:list/widgets/notes_card.dart';
+import 'dart:math';
+
 // import 'models/nota.dart';
 import 'package:list/widgets/note_modal.dart';
 
@@ -26,92 +29,108 @@ class _FirstPageState extends State<FirstPage>
 
   int tabIndex = 0;
 
+  var notesService = Nota();
+  List<Map<String, dynamic>> notesList = [];
   @override
   void initState() {
     _tabController = TabController(vsync: this, length: 3);
-    super.initState();
+    notesService.GetUserNotes(context).then((value) {
+      notesList = value;
+      super.initState();
+    });
   }
 
   // Lista de notas que se obtiene del frontEnd ( De momento está fija)
-  final List<Map<String, dynamic>> notesList = [
-    {
-      'title': 'Nota 1',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff6270C4)
-    },
-    {
-      'title': 'Nota 2',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec consectetur neque nec pulvinar blandit. Donec sed arcu vestibulum, feugiat enim sed, commodo tellus. Nunc id interdum leo. Sed erat orci, porttitor nec ipsum et, egestas efficitur mi. Nulla quam felis, ultrices non efficitur quis, laoreet venenatis augue. Nulla vitae laoreet orci. Vestibulum viverra, urna ullamcorper pretium fermentum, mi mauris convallis tortor, id pulvinar turpis eros vitae metus. In sed urna aliquam, iaculis orci ut, ultrices magna. Praesent eleifend, sem sit amet fringilla dapibus, magna nisl scelerisque tellus, malesuada auctor sapien arcu et magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas nisi lectus, commodo in auctor nec, convallis in augue. Duis ornare arcu augue. Donec congue ornare ante, eget mattis velit bibendum at.',
-      'color': const Color(0xff5BC475)
-    },
-    {
-      'title': 'Nota 3',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar, ligula nec molestie venenatis, nulla velit rutrum metus, ut pharetra.',
-      'color': const Color(0xff00ADB5)
-    },
-    {
-      'title': 'Nota 4',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff5BC475)
-    },
-    {
-      'title': 'Nota 5',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff00ADB5)
-    },
-    {
-      'title': 'Nota 3',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar, ligula nec molestie venenatis, nulla velit rutrum metus, ut pharetra.',
-      'color': const Color(0xff00ADB5)
-    },
-    {
-      'title': 'Nota 4',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff5BC475)
-    },
-    {
-      'title': 'Nota 5',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff00ADB5)
-    },
-    {
-      'title': 'Nota 3',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar, ligula nec molestie venenatis, nulla velit rutrum metus, ut pharetra.',
-      'color': const Color(0xff00ADB5)
-    },
-    {
-      'title': 'Nota 4',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff5BC475)
-    },
-    {
-      'title': 'Nota 5',
-      'date': DateTime.now(),
-      'content':
-          'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
-      'color': const Color(0xff00ADB5)
-    },
-  ];
+  // final List<Map<String, dynamic>> notesList = [
+  //   {
+  //     'title': 'Nota 1',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff6270C4)
+  //   },
+  //   {
+  //     'title': 'Nota 2',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec consectetur neque nec pulvinar blandit. Donec sed arcu vestibulum, feugiat enim sed, commodo tellus. Nunc id interdum leo. Sed erat orci, porttitor nec ipsum et, egestas efficitur mi. Nulla quam felis, ultrices non efficitur quis, laoreet venenatis augue. Nulla vitae laoreet orci. Vestibulum viverra, urna ullamcorper pretium fermentum, mi mauris convallis tortor, id pulvinar turpis eros vitae metus. In sed urna aliquam, iaculis orci ut, ultrices magna. Praesent eleifend, sem sit amet fringilla dapibus, magna nisl scelerisque tellus, malesuada auctor sapien arcu et magna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Maecenas nisi lectus, commodo in auctor nec, convallis in augue. Duis ornare arcu augue. Donec congue ornare ante, eget mattis velit bibendum at.',
+  //     'color': const Color(0xff5BC475)
+  //   },
+  //   {
+  //     'title': 'Nota 3',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar, ligula nec molestie venenatis, nulla velit rutrum metus, ut pharetra.',
+  //     'color': const Color(0xff00ADB5)
+  //   },
+  //   {
+  //     'title': 'Nota 4',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff5BC475)
+  //   },
+  //   {
+  //     'title': 'Nota 5',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff00ADB5)
+  //   },
+  //   {
+  //     'title': 'Nota 3',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar, ligula nec molestie venenatis, nulla velit rutrum metus, ut pharetra.',
+  //     'color': const Color(0xff00ADB5)
+  //   },
+  //   {
+  //     'title': 'Nota 4',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff5BC475)
+  //   },
+  //   {
+  //     'title': 'Nota 5',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff00ADB5)
+  //   },
+  //   {
+  //     'title': 'Nota 3',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam pulvinar, ligula nec molestie venenatis, nulla velit rutrum metus, ut pharetra.',
+  //     'color': const Color(0xff00ADB5)
+  //   },
+  //   {
+  //     'title': 'Nota 4',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff5BC475)
+  //   },
+  //   {
+  //     'title': 'Nota 5',
+  //     'date': DateTime.now(),
+  //     'content':
+  //         'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sagittis.',
+  //     'color': const Color(0xff00ADB5)
+  //   },
+  // ];
+
+  // Función para obtener un color de manera aleatoria
+  Color getColor() {
+    var rng = Random();
+    var colorNumber = rng.nextInt(2);
+    if (colorNumber == 0) {
+      return const Color(0xff6270C4);
+    } else {
+      return const Color(0xff5BC475);
+    }
+  }
 
   // Función para obtener el widget con la sección de notas
   Widget getNotesSection(BuildContext context) {
@@ -123,10 +142,10 @@ class _FirstPageState extends State<FirstPage>
         itemBuilder: (BuildContext context, index) {
           final item = notesList[index];
           return NoteCard(
-              title: item['title'],
-              content: item['content'],
-              date: item['date'],
-              cardColor: item['color']);
+              title: item['titulo'],
+              content: item['contenido'],
+              date: item['fecha'].toDate(),
+              cardColor: getColor());
         });
   }
 
