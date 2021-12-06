@@ -4,7 +4,6 @@ import 'package:list/user_pref.dart';
 
 CollectionReference accounts =
     FirebaseFirestore.instance.collection("accounts");
-final _prefs = new UserPref();
 
 Future<void> registerAccount(user, email, context) {
   return accounts.add({
@@ -21,12 +20,11 @@ Future<void> registerAccount(user, email, context) {
 
 Future<void> obtenUsuarioCorreo(correo) {
   print(correo);
-  return accounts.where('correo', isEqualTo: correo).get().then((value) {
-    value.docs.forEach((result) {
-      UserPref.guardaID(result.id);
-      print(result.id);
-      print(result.data());
-    });
+  return accounts.where('email', isEqualTo: correo).get().then((value) {
+    for( var user in value.docs){
+      // Se guarda el ID del usuario en las sharedPreferences de la aplicación
+      UserPref.guardaID(user.id);
+    }
   }).catchError((error) {
     print("Error al obtener el usuario: $error");
   });

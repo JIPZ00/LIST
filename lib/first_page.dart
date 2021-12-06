@@ -184,12 +184,11 @@ class _FirstPageState extends State<FirstPage>
           floatingActionButton: FloatingActionButton(
             backgroundColor: primaryBlueColor,
             child: const Icon(Icons.add, color: primaryWhite, size: 30.0),
-            onPressed: () async {
+            onPressed: () {
               switch (_tabController.index) {
                 // El indice está en la pantalla de notas
                 case 0:
                   print("Creando nueva nota");
-                  print(await UserPref.getID());
                   showModalBottomSheet(
                       context: context,
                       builder: (BuildContext context) {
