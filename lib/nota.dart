@@ -24,10 +24,13 @@ class Nota {
     });
   }
 
-  Future<List<Map<String, dynamic>>> GetUserNotes(BuildContext context) async {
+  static Future<List<Map<String, dynamic>>> getUserNotes() async {
     List<Map<String, dynamic>> notesList = [];
     String userId = await UserPref.getID();
-    var querySnapshot = await notes.where("userId", isEqualTo: userId).get();
+    var querySnapshot = await notes
+        .where("userId", isEqualTo: userId)
+        .orderBy('fecha', descending: true)
+        .get();
     for (var queryDocumentSnapchot in querySnapshot.docs) {
       Map<String, dynamic> data = queryDocumentSnapchot.data();
       notesList.add(data);

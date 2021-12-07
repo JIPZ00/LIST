@@ -125,7 +125,7 @@ class _RegisterPageState extends State<RegisterPage> {
             ));
           } else {
             userController.RegisterUser(emailUser.text, passwordUser.text)
-                .then((value) {
+                .then((value) {                  
               if (value["Ok"] == true) {
                 registerAccount(nameUser.text, emailUser.text, context);
                 Navigator.of(context).push(MaterialPageRoute(

@@ -18,7 +18,7 @@ Future<void> registerAccount(user, email, context) {
   });
 }
 
-Future<void> obtenUsuarioCorreo(correo) {
+Future<void> obtenUsuarioCorreo(correo){
   print(correo);
   return accounts.where('email', isEqualTo: correo).get().then((value) {
     for( var user in value.docs){

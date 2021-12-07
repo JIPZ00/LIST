@@ -1,10 +1,34 @@
+// ignore_for_file: prefer_typing_uninitialized_variables
+
 import 'package:flutter/material.dart';
 import 'package:list/first_page.dart';
 import 'package:list/values/tema.dart';
 import 'package:list/nota.dart';
 
 class NoteModal extends StatefulWidget {
-  const NoteModal({Key? key}) : super(key: key);
+  // Callback que se va a ejecutar cuando se agregue una nueva nota
+  final noteCallback;
+
+  // Bandera que determina si se está editando o creando una nota
+  final edit;
+
+  // Título de la nota ( En caso de que se esté editando )
+  final noteTitle;
+
+  // Texto de la nota ( En caso de que se esté editando )
+  final noteContent;
+
+  // Id de la nota ( En caso de que se esté editando )
+  final noteId;
+
+  const NoteModal(
+      {Key? key,
+      this.noteCallback,
+      required this.edit,
+      this.noteTitle,
+      this.noteContent,
+      this.noteId})
+      : super(key: key);
 
   @override
   _NoteModalState createState() => _NoteModalState();
@@ -14,6 +38,18 @@ class _NoteModalState extends State<NoteModal> {
   final TextEditingController _tituloController = TextEditingController();
   final TextEditingController _contenidoController = TextEditingController();
   final noteController = Nota();
+
+  @override
+  void initState() {
+    // En caso de que se esté editando la nota entonces se le va a asignar a los controladores del titulo y el contenido de la nota
+    // el texto recibido al crear el widget
+    if (widget.edit) {
+      _tituloController.text = widget.noteTitle;
+      _contenidoController.text = widget.noteTitle;
+    }
+    super.initState();
+  }
+
   @override
   void dispose() {
     _contenidoController.dispose();
@@ -44,21 +80,22 @@ class _NoteModalState extends State<NoteModal> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                child: const Text('Aceptar'),
+                child: const Text('Guardar'),
                 onPressed: () {
-                  noteController
-                      .addNotes(_tituloController.text,
-                          _contenidoController.text, context)
-                      .then((value) {
-                    Navigator.pop(context);
-                  });
-
-                  // Navigator.pop(context);
-                  // ScaffoldMessenger.of(context).showSnackBar(
-                  //   const SnackBar(
-                  //     content: Text("Nota agregada"),
-                  //   ),
-                  // );
+                  // Si no se está editando la nota entonces se crea una nueva nota para ese usuario
+                  if (!widget.edit) {
+                    noteController
+                        .addNotes(_tituloController.text,
+                            _contenidoController.text, context)
+                        .then((value) {
+                      Navigator.pop(context);
+                      widget.noteCallback();
+                    });
+                  }
+                  // En caso contrario se va a editar la nota ya creada
+                  else {
+                    print("Editando nota");
+                  }
                 },
               ),
               const SizedBox(
