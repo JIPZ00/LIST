@@ -91,6 +91,13 @@ class _LoginPageState extends State<LoginPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Al generar este widget se limpian los input de usuario y contraseña
+    initState() {
+      super.initState();
+      controlPassword.text = "";
+      controlUsuario.text = "";
+    }
+
     Widget bottonLogin() {
       {
         return ElevatedButton(
@@ -110,7 +117,7 @@ class _LoginPageState extends State<LoginPage> {
                 //Si se logra inciar sesion
                 if (resp["ok"] == true) {
                   obtenUsuarioCorreo(controlUsuario.text).then((value) {
-                    Navigator.of(context).push(MaterialPageRoute(
+                    Navigator.of(context).pushReplacement(MaterialPageRoute(
                         builder: (BuildContext context) {
                           return const FirstPage();
                         },
@@ -167,11 +174,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                     passwordTextField(),
                     const SizedBox(
-                      height: 15.0,
-                    ),
-                    forgotPassword(),
-                    const SizedBox(
-                      height: 20,
+                      height: 25.0,
                     ),
                     bottonLogin(),
                     const SizedBox(

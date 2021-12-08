@@ -45,7 +45,7 @@ class _NoteModalState extends State<NoteModal> {
     // el texto recibido al crear el widget
     if (widget.edit) {
       _tituloController.text = widget.noteTitle;
-      _contenidoController.text = widget.noteTitle;
+      _contenidoController.text = widget.noteContent;
     }
     super.initState();
   }
@@ -56,6 +56,34 @@ class _NoteModalState extends State<NoteModal> {
     _tituloController.dispose();
     // TODO: implement dispose
     super.dispose();
+  }
+
+  // Función para agregar una nueva nota
+  createNote(BuildContext context) {
+    noteController
+        .addNotes(_tituloController.text, _contenidoController.text, context)
+        .then((value) {
+      Navigator.pop(context);
+      widget.noteCallback();
+    });
+  }
+
+  // Función para editar una nota ya creada
+  editNote(BuildContext context) {
+    Nota.editNote(_tituloController.text, _contenidoController.text, context,
+            widget.noteId)
+        .then((value) {
+      Navigator.pop(context);
+      widget.noteCallback();
+    });
+  }
+
+  // Función para eliminar una nota
+  deleteNote(BuildContext context) {
+    Nota.deleteNote(widget.noteId, context).then((value) {
+      Navigator.pop(context);
+      widget.noteCallback();
+    });
   }
 
   @override
@@ -80,23 +108,30 @@ class _NoteModalState extends State<NoteModal> {
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
               ElevatedButton(
-                child: const Text('Guardar'),
+                child: const Text('Guardar Nota'),
                 onPressed: () {
                   // Si no se está editando la nota entonces se crea una nueva nota para ese usuario
                   if (!widget.edit) {
-                    noteController
-                        .addNotes(_tituloController.text,
-                            _contenidoController.text, context)
-                        .then((value) {
-                      Navigator.pop(context);
-                      widget.noteCallback();
-                    });
+                    createNote(context);
                   }
                   // En caso contrario se va a editar la nota ya creada
                   else {
-                    print("Editando nota");
+                    editNote(context);
                   }
                 },
+              ),
+              const SizedBox(
+                width: 10,
+              ),
+              Visibility(
+                visible: widget.edit,
+                child: ElevatedButton(
+                  style: ElevatedButton.styleFrom(primary: Colors.red),
+                  child: const Text('Eliminar Nota'),
+                  onPressed: () {
+                    deleteNote(context);
+                  },
+                ),
               ),
               const SizedBox(
                 width: 10,

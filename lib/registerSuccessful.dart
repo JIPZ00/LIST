@@ -36,31 +36,34 @@ class _RegisterSuccessfulPageState extends State<RegisterSuccessfulPage> {
       margin: EdgeInsets.all(40),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       elevation: 10,
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Text("Registro Exitoso"),
-          Icon(
-            Icons.check,
-            size: 60,
-          ),
-          Text("Puedes iniciar secion con tus nuevos datos"),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(
-                  onPressed: () => {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) {
-                              return new LoginPage();
-                            },
-                            settings: RouteSettings(name: LoginPage.id))),
-                      },
-                  child: Text('Regresar al inicio'),
-                  style: ElevatedButton.styleFrom(primary: primaryBlueColor))
-            ],
-          )
-        ],
+      child: Padding(
+        padding: const EdgeInsets.all(12.0),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Text("Registro Exitoso"),
+            Icon(
+              Icons.check,
+              size: 60,
+            ),
+            Text("Puedes iniciar sesión con tus nuevos datos"),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(
+                    onPressed: () => {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (BuildContext context) {
+                                return new LoginPage();
+                              },
+                              settings: RouteSettings(name: LoginPage.id))),
+                        },
+                    child: Text('Regresar al inicio'),
+                    style: ElevatedButton.styleFrom(primary: primaryBlueColor))
+              ],
+            )
+          ],
+        ),
       ),
     );
   }

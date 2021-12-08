@@ -7,6 +7,7 @@ class NoteCard extends StatelessWidget {
   final DateTime date;
   final int index;
   final Color cardColor;
+  final BuildContext parentContext;
   // Callback que se va a ejecutar cuando se le de click a una nota
   final callbackNoteClick;
   // Constructor que recibe el titulo de la nota, el contenido y la fecha
@@ -17,15 +18,17 @@ class NoteCard extends StatelessWidget {
       required this.date,
       required this.cardColor,
       required this.index,
-      required this.callbackNoteClick})
+      required this.callbackNoteClick,
+      required this.parentContext})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: (){
+      // CUando se mantiene presionado se ejecuta el callback
+      onLongPress: () {
         // Se presionó la tarjeta, se ejecuta el callback
-        callbackNoteClick(index);
+        callbackNoteClick(index, parentContext);
       },
       child: Card(
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
@@ -46,7 +49,9 @@ class NoteCard extends StatelessWidget {
                 Expanded(
                     flex: 2,
                     child: Text(title,
+                        maxLines: 1,
                         style: const TextStyle(
+                            overflow: TextOverflow.ellipsis,
                             color: Color(0xffFFFFFF),
                             fontSize: 20,
                             fontWeight: FontWeight.w600))),

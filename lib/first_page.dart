@@ -2,6 +2,7 @@
 
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:list/login.dart';
 import 'package:list/nota.dart';
 import 'package:list/user_pref.dart';
 import 'package:list/values/tema.dart';
@@ -50,6 +51,17 @@ class _FirstPageState extends State<FirstPage>
     }
   }
 
+// Función para cerrar sesión
+  endSession(BuildContext context) async {
+    await UserPref.guardaID('');
+
+    Navigator.of(context).pushReplacement((MaterialPageRoute(
+        builder: (BuildContext context) {
+          return const LoginPage();
+        },
+        settings: RouteSettings(name: LoginPage.id))));
+  }
+
   // Función para obtener el widget con la sección de notas
   Widget getNotesSection(BuildContext context) {
     return GridView.builder(
@@ -66,6 +78,7 @@ class _FirstPageState extends State<FirstPage>
             cardColor: getColor(),
             index: index,
             callbackNoteClick: callbackNoteClick,
+            parentContext: context,
           );
         });
   }
@@ -113,7 +126,20 @@ class _FirstPageState extends State<FirstPage>
 // Función para obtener el scaffold de la pagina
   Widget getPageScaffold() {
     return Scaffold(
-      appBar: AppBar(),
+      // App bar con el nombre de la app y el botón de cerrar sesión
+      appBar: AppBar(title: const Text("LIST APP"), actions: [
+        TextButton(
+          child: const Text(
+            'Cerrar sesión',
+            style: const TextStyle(
+                color: Colors.white, decoration: TextDecoration.underline),
+          ),
+          onPressed: () async {
+            // Al dar click al botón de cerrar sesión se ejecuta la función para cerrar sesión
+            await endSession(context);
+          },
+        ),
+      ]),
       backgroundColor: backgroundPageColor,
       floatingActionButton: FloatingActionButton(
         backgroundColor: primaryBlueColor,
@@ -122,7 +148,6 @@ class _FirstPageState extends State<FirstPage>
           switch (_tabController.index) {
             // El indice está en la pantalla de notas
             case 0:
-              print("Creando nueva nota");
               showModalBottomSheet(
                   context: context,
                   builder: (BuildContext context) {
@@ -197,16 +222,28 @@ class _FirstPageState extends State<FirstPage>
 
   // Método Callback que se dispara cuando el usuario guarde una nueva nota
   callbackNewNote() {
-    print("Cambió la lista de notas");
     setState(() {
       future = Nota.getUserNotes();
     });
   }
+
   // Método callback que se dispara cuando el usuario de click a una nota ya creada
-  callbackNoteClick(int index){
-    print("Nota seleccionada: "+ notesList[index].toString());
+  callbackNoteClick(index, BuildContext context) {
+    // print("Nota seleccionada: " + notesList[index].toString());
+    // Al momento de dar click se muestra el modal con la información de la nota
+    showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return NoteModal(
+            edit: true,
+            noteCallback: callbackNewNote,
+            noteTitle: notesList[index]['titulo'],
+            noteContent: notesList[index]['contenido'],
+            noteId: notesList[index]['id'],
+          );
+        });
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
